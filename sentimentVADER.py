@@ -3,13 +3,14 @@ import nltk
 
 # Input speech
 data = []
-text = open("speeches/biden.txt", 'r', encoding='utf-8')
+text = open("speeches/lincoln.txt", 'r', encoding='utf-8')
 data = nltk.sent_tokenize(text.read())
 
 filtered_data = []
 for sentence in data:
     if (sentence.rstrip() != ""):
         filtered_data.append(sentence.rstrip())
+
 
 sia = SentimentIntensityAnalyzer()
 stats = {
@@ -24,7 +25,7 @@ def printAllScores(sentence):
   print("negative:  ", scores["neg"])
   print("neutral:   ", scores["neu"])
 
-
+# Print results
 for i in filtered_data:
   scores = sia.polarity_scores(i)
   # socres = ["compound", "pos", "neg", "neu"]
@@ -41,7 +42,7 @@ for i in filtered_data:
   
   print("Sentence:", i, "\n")
   
-
+# Print sentiment stats
 print("\nSpeech Stats: ")
 print("Number of positive - ", len(stats["positive"]))
 print("Number of negative - ", len(stats["negative"]))

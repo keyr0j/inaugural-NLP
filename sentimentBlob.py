@@ -2,7 +2,7 @@ from textblob import TextBlob
 import nltk
 
 # Input speech
-text = open("speeches/lincoln.txt", 'r', encoding='utf-8')
+text = open("speeches/biden.txt", 'r', encoding='utf-8')
 data = nltk.sent_tokenize(text.read())
 
 filtered_data = []

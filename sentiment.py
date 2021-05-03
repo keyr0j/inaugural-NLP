@@ -1,9 +1,10 @@
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import nltk
 
 # Input speech
 data = []
-for sentence in open("speeches/trump.txt", 'r', encoding='utf-8'):
-  data.append(sentence)
+text = open("speeches/biden.txt", 'r', encoding='utf-8')
+data = nltk.sent_tokenize(text.read())
 
 filtered_data = []
 for sentence in data:

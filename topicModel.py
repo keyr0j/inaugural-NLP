@@ -20,7 +20,7 @@ if __name__ == '__main__':
                 result.append(lemmatize_stemming(token))
         return result
 
-    text =  open("speeches/biden.txt", 'r', encoding='utf-8')
+    text = open("speeches/biden.txt", 'r', encoding='utf-8')
 
     sentenceList = nltk.sent_tokenize(text.read())
 

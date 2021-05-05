@@ -40,7 +40,6 @@ for i in filtered_data:
     print("-----------------")
     printAllScores(sentence)
     stats["neutral"].append((sentence, "neu"))
-
   print("Sentence:", i, "\n")
 
 # Prints sentiment stats

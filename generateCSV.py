@@ -11,11 +11,11 @@ from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from nltk.stem.porter import *
 
 # data
-presidents = ['arthur', 'biden', 'bush', 'carter', 
-             'clinton', 'fdr', 'jackson', 'jefferson', 
-             'kennedy', 'lincoln', 'nixon', 'obama', 
-             'polk', 'roosevelt', 'truman', 'trump',
-             'washington', 'wilson']
+presidents = [('arthur', 1881), ('biden', 2021), ('bush', 2001), ('carter', 1977),
+             ('clinton', 1993), ('fdr', 1933), ('jackson',1829), ('jefferson', 1801),
+             ('kennedy', 1961), ('lincoln', 1861), ('nixon', 1969), ('obama', 2008),
+             ('polk', 1845), ('roosevelt', 1905), ('truman', 1949), ('trump', 2016),
+             ('washington', 1789), ('wilson', 1913)]
 
 
 # Prints all of the scores of the sentences using Sentiment Intensity Analyzer
@@ -58,7 +58,7 @@ if __name__ == '__main__':
   for president in presidents:
     print(president)
     data = []
-    file = "speeches/" + president + ".txt";
+    file = "speeches/" + president[0] + ".txt";
     # Input speech
     text = open(file, 'r', encoding='utf-8')
     data = nltk.sent_tokenize(text.read())
@@ -173,8 +173,8 @@ if __name__ == '__main__':
   count  = 0
   for i in presidents:
     csv_dict = {
-      "President": i,
-      "Year": "N/A",
+      "President": i[0],
+      "Year": i[1],
       "vaderPositive": allPositiveVADER[count],
       "vaderNegative": allNegativeVADER[count],
       "vaderNeutral": allNeutralVADER[count],

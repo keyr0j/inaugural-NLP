@@ -1,4 +1,5 @@
 import gensim
+from gensim import corpora, models
 from gensim.utils import simple_preprocess
 from gensim.parsing.preprocessing import STOPWORDS
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
@@ -48,7 +49,7 @@ if __name__ == '__main__':
     # Pre-processes each sentence
     processed_sentences = list(map(preprocess, sentenceList))
 
-    # Creates dictionary using the prepreocessed sentences
+    # Creates dictionary using the preprocessed sentences
     dictionary = gensim.corpora.Dictionary(processed_sentences)
 
     # Prints the first 10 items in the dictionary
@@ -68,14 +69,11 @@ if __name__ == '__main__':
     # For each document we create a dictionary reporting how many words and how many times those words appear
     bow_corpus = [dictionary.doc2bow(sentence) for sentence in processed_sentences]
 
-
-    from gensim import corpora, models
-
     # Train model using Bag of Words
-    lda_model = gensim.models.LdaMulticore(bow_corpus, num_topics=10, id2word=dictionary, passes=2, workers=2)
+    lda_model = gensim.models.LdaMulticore(bow_corpus, num_topics=4, id2word=dictionary, passes=2, workers=2)
     print("-----Bag-of-Words-----")
     for idx, topic in lda_model.print_topics(-1):
-        print('Topic: {} \nWords: {}'.format(idx, topic))
+        print('Topic: {} Words: {}'.format(idx, topic))
 
     # Create tf-idf model
     tfidf = models.TfidfModel(bow_corpus)
@@ -84,7 +82,7 @@ if __name__ == '__main__':
     corpus_tfidf = tfidf[bow_corpus]
 
     # Train model using TF-IDF
-    lda_model_tfidf = gensim.models.LdaMulticore(corpus_tfidf, num_topics=10, id2word=dictionary, passes=2, workers=4)
+    lda_model_tfidf = gensim.models.LdaMulticore(corpus_tfidf, num_topics=4, id2word=dictionary, passes=2, workers=4)
     print("-----TF-IDF-----")
     for idx, topic in lda_model_tfidf.print_topics(-1):
         print('Topic: {} Word: {}'.format(idx, topic))

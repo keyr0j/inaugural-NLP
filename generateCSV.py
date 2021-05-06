@@ -9,6 +9,8 @@ from gensim.utils import simple_preprocess
 from gensim.parsing.preprocessing import STOPWORDS
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from nltk.stem.porter import *
+import re
+from nltk.corpus import stopwords
 
 # data
 presidents = [('arthur', 1881), ('biden', 2021), ('bush', 2001), ('carter', 1977),
@@ -52,6 +54,7 @@ allPositiveBlob = []
 allNegativeBlob = []
 allNeutralBlob = []
 allTopicLists = []
+allTop10Words = []
 
 if __name__ == '__main__':
 
@@ -166,6 +169,23 @@ if __name__ == '__main__':
       topicList.append(topic)
     
     allTopicLists.append(topicList)
+    
+    wordsInSpeech = []
+    stop_words = list(set(nltk.corpus.stopwords.words("english")))
+    for i in filtered_data:
+      cleaned_words = re.sub(r'[^(a-zA-Z)\s]','', i)
+      tokenized_words = nltk.word_tokenize(cleaned_words)
+      stopped_words = [w for w in tokenized_words if not w in stop_words]
+      pos = nltk.pos_tag(stopped_words)
+      for w in pos:
+        wordsInSpeech.append(w[0].lower())
+      
+    wordsInSpeech = nltk.FreqDist(wordsInSpeech)
+    speechTop10 = list(wordsInSpeech.keys())[:10]
+    allTop10Words.append(speechTop10)
+
+      
+
 
 
   #----------CSV----------
@@ -185,7 +205,7 @@ if __name__ == '__main__':
       "topic1": allTopicLists[count][1],
       "topic2": allTopicLists[count][2],
       "topic3": allTopicLists[count][3],
-      "top10": "N/A",
+      "top10": allTop10Words[count],
     }
     count = count + 1
     csv_data.append(csv_dict)

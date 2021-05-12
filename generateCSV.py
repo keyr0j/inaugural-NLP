@@ -55,6 +55,7 @@ allNegativeBlob = []
 allNeutralBlob = []
 allTopicLists = []
 allTop10Words = []
+allSentences = []
 
 if __name__ == '__main__':
 
@@ -148,6 +149,7 @@ if __name__ == '__main__':
     #----------Topic Model----------
     # Pre-processes each sentence
     processed_sentences = list(map(preprocess, filtered_data))
+    allSentences += processed_sentences
 
     # Creates dictionary using the preprocessed sentences
     dictionary = gensim.corpora.Dictionary(processed_sentences)
@@ -184,7 +186,24 @@ if __name__ == '__main__':
     speechTop10 = list(wordsInSpeech.keys())[:10]
     allTop10Words.append(speechTop10)
 
-      
+
+  # Creates dictionary using ALL the preprocessed sentences in the entire corpus
+  dictionary = gensim.corpora.Dictionary(allSentences)
+
+  # Filters out tokens that appear:
+  # Less than 2 sentences OR
+  # More than 0.5 sentences
+  # After the first 2, keep only the first 100,000 most frequent tokens
+  dictionary.filter_extremes(no_below=2, no_above=0.5, keep_n=100000)
+
+  # For each document we create a dictionary reporting how many words and how many times those words appear
+  bow_corpus = [dictionary.doc2bow(sentence) for sentence in allSentences]
+
+  # Train model using Bag of Words
+  lda_model = gensim.models.LdaMulticore(bow_corpus, num_topics=4, id2word=dictionary, passes=2, workers=2)
+
+  for idx, topic in lda_model.print_topics(-1):
+    print('Topic: {} Words: {}'.format(idx, topic))
 
 
 
